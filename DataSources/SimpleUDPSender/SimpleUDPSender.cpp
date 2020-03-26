@@ -28,8 +28,11 @@
 /*---------------------------------------------------------------------------*/
 /*                         Project header includes                           */
 /*---------------------------------------------------------------------------*/
+#include <iostream>
+
 #include "AdvancedErrorManagement.h"
 #include "SimpleUDPSender.h"
+
 
 /*---------------------------------------------------------------------------*/
 /*                           Static definitions                              */
@@ -171,7 +174,7 @@ bool SimpleUDPSender::GetSignalMemoryBuffer(const MARTe::uint32 signalIdx, const
 }
 
 const MARTe::char8* SimpleUDPSender::GetBrokerName(MARTe::StructuredDataI& data, const MARTe::SignalDirection direction) {
-    return "";
+    return "MemoryMapSynchronisedOutputBroker";
 }
 
 bool SimpleUDPSender::PrepareNextState(const MARTe::char8* const currentStateName, const MARTe::char8* const nextStateName) {
@@ -179,7 +182,16 @@ bool SimpleUDPSender::PrepareNextState(const MARTe::char8* const currentStateNam
 }
     
 bool SimpleUDPSender::Synchronise() {
+    using namespace MARTe;
     bool ok = true;
+    ok = udpSocket.Write(payload, totalMemorySize);
+    if (!ok) {
+        REPORT_ERROR(ErrorManagement::FatalError, "Failed to Write socket");
+    }
+    ok = udpSocket.Flush();
+    if (!ok) {
+        REPORT_ERROR(ErrorManagement::FatalError, "Failed to Flush socket");
+    }
     return ok;
 }
 
