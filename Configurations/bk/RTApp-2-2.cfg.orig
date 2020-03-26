@@ -1,6 +1,6 @@
 $TestApp = {
     Class = RealTimeApplication
-    +Functions = {
+    +GAMs = {
         Class = ReferenceContainer
         +GAMTimer = {
             Class = IOGAM
@@ -27,7 +27,7 @@ $TestApp = {
             }
         }
     }
-    +Data = {
+    +Drivers = {
         Class = ReferenceContainer
         DefaultDataSource = DDB1
         +LoggerDataSource = {
@@ -49,7 +49,7 @@ $TestApp = {
             }
         }        
     }
-    +States = {
+    +Statesz = {
         Class = ReferenceContainer
         +State1 = {
             Class = RealTimeState
