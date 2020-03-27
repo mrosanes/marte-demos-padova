@@ -56,7 +56,7 @@ public:
     /**
      * @brief NOOP.
      */
-MotorEx1    () {
+    MotorEx1() {
         property = 0u;
     }
 
@@ -77,6 +77,27 @@ MotorEx1    () {
 
 CLASS_REGISTER(MotorEx1, "")
 
+
+class DieselEx1: public MotorEx1 {
+public:
+    CLASS_REGISTER_DECLARATION()
+
+    /**
+     * @brief NOOP.
+     */
+    DieselEx1() {
+	property = 0u;
+    }
+
+    /**
+     * A property.
+     */
+    MARTe::uint32 property;
+};
+
+CLASS_REGISTER(DieselEx1, "")
+
+
 class ControllerEx1: public MARTe::Object {
 public:
     CLASS_REGISTER_DECLARATION()
@@ -84,7 +105,7 @@ public:
     /**
      * @brief NOOP.
      */
-ControllerEx1    () {
+    ControllerEx1() {
         property2 = 0u;
     }
 
@@ -97,7 +118,7 @@ ControllerEx1    () {
         }
     }
 
-    virtual void AFunction () {
+    virtual void AFunction() {
         using namespace MARTe;
         REPORT_ERROR_STATIC(ErrorManagement::Information, "AFunction called @ %s.", GetName());
     }
@@ -110,6 +131,7 @@ ControllerEx1    () {
 
 CLASS_REGISTER(ControllerEx1, "")
 
+
 class PIDEx1: public ControllerEx1 {
 public:
     CLASS_REGISTER_DECLARATION()
@@ -117,7 +139,7 @@ public:
     /**
      * @brief NOOP.
      */
-PIDEx1    () {
+    PIDEx1() {
         property3 = 0u;
     }
 
@@ -140,6 +162,7 @@ PIDEx1    () {
 CLASS_REGISTER(PIDEx1, "")
 }
 
+
 int main(int argc, char **argv) {
     using namespace MARTe;
     using namespace MARTe2Tutorial;
@@ -148,6 +171,7 @@ int main(int argc, char **argv) {
     CCString className1 = "MotorEx1";
     CCString className2 = "ControllerEx1";
     CCString className3 = "PIDEx1";
+    CCString className4 = "DieselEx1";
 
     //Automatically generate a new object instance based on the class name and on the
     //correct Heap and with the template reference.
@@ -156,6 +180,15 @@ int main(int argc, char **argv) {
         ref1->SetName("MotorInstance1");
         REPORT_ERROR_STATIC(ErrorManagement::Information, "Successfully created an "
         		"instance of %s", className1.GetList());
+    }
+
+    //Automatically generate a new object instance based on the class name and on the
+    //correct Heap and with the template reference.
+    ReferenceT<MotorEx1> ref5(className4, GlobalObjectsDatabase::Instance()->GetStandardHeap());
+    if (ref5.IsValid()) {
+        ref5->SetName("DieselInstance1");
+        REPORT_ERROR_STATIC(ErrorManagement::Information, "Successfully created an "
+        		"instance of %s", className4.GetList());
     }
 
     //This should fail because className2 is not of type MotorEx1

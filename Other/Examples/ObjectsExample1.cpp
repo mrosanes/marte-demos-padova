@@ -65,8 +65,27 @@ ControllerEx1    () {
     MARTe::uint32 gain;
 };
 
+class ControllerNewClass: public MARTe::Object {
+public:
+    CLASS_REGISTER_DECLARATION()
+
+    /**
+     * @brief NOOP.
+     */
+ControllerNewClass    () {
+        gain = 0u;
+    }
+
+    /**
+     * A property.
+     */
+    MARTe::uint32 gain;
+};
+
 CLASS_REGISTER(ControllerEx1, "")
+CLASS_REGISTER(ControllerNewClass, "")
 }
+
 
 int main(int argc, char **argv) {
     using namespace MARTe;
