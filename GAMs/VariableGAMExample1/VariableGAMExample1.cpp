@@ -202,6 +202,10 @@ bool VariableGAMExample1::Setup() {
 }
 
 bool VariableGAMExample1::Execute() {
+    uint i;
+    for(i=0; i<numberOfOutputSignals; i++){
+        *outputSignals[i] = gains[i]*(*inputSignal);
+    }
     return true;
 }
 

@@ -41,12 +41,13 @@ namespace MARTe2Tutorial {
 /**
  * @brief An example of a GAM which has fixed inputs and outputs.
  *
- * @details This GAM multiplies the input signal by a Gain.
+ * @details This GAM multiplies the input signal by a Gain and it adds an offset
  * The configuration syntax is (names and types are only given as an example):
  *
  * +GAMExample1 = {
  *     Class = FixedGAMExample1
  *     Gain = 5 //Compulsory
+ *     Offset = 8 //Compulsory
  *     InputSignals = {
  *         Signal1 = {
  *             DataSource = "DDB1"
@@ -75,9 +76,9 @@ public:
     virtual ~FixedGAMExample1();
 
     /**
-     * @brief Reads the Gain from the configuration file.
-     * @param[in] data see GAM::Initialise. The parameter Gain shall exist and will be read as an uint32.
-     * @return true if the parameter Gain can be read.
+     * @brief Reads the Gain and Offset from the configuration file.
+     * @param[in] data see GAM::Initialise. The parameter Gain and Offset shall exist and will be read as uint32.
+     * @return true if the parameter Gain and Offset can be read.
      */
     virtual bool Initialise(MARTe::StructuredDataI & data);
 
@@ -96,7 +97,7 @@ public:
     virtual bool Setup();
 
     /**
-     * @brief Multiplies the input signal by the Gain.
+     * @brief Multiplies the input signal by the Gain and adds the Offset.
      * @return true.
      */
     virtual bool Execute();
@@ -119,9 +120,10 @@ private:
     MARTe::uint32 *outputSignal;
 
     /**
-     * The configured gain.
+     * The configured gain and offset.
      */
     MARTe::uint32 gain;
+    MARTe::uint32 offset;
 };
 }
 /*---------------------------------------------------------------------------*/

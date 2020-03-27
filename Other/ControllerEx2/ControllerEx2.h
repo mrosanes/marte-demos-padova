@@ -97,6 +97,7 @@ public:
      * @brief Example of an RPC.
      */
     MARTe::ErrorManagement::ErrorType ResetGain1();
+    MARTe::ErrorManagement::ErrorType UpdateGain1(float param1, float param2, float param3, float param4);
 
 private:
     bool LoadGains(Gain &gainToLoad, MARTe::StructuredDataI &data);
@@ -108,6 +109,10 @@ private:
      */
     Gains gains1;
     Gains gains2;
+    //float32 a;
+    //float32 b;
+    //float32 c;
+    //float32 d;
     MARTe::float32 tau;
 };
 

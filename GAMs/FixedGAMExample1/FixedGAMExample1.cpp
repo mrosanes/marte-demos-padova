@@ -41,6 +41,7 @@
 namespace MARTe2Tutorial {
 FixedGAMExample1::FixedGAMExample1() {
     gain = 0u;
+    offset = 0u;
     inputSignal = NULL_PTR(MARTe::uint32 *);
     outputSignal = NULL_PTR(MARTe::uint32 *);
 }
@@ -51,18 +52,25 @@ FixedGAMExample1::~FixedGAMExample1() {
 
 bool FixedGAMExample1::Initialise(MARTe::StructuredDataI & data) {
     using namespace MARTe;
+    bool ok1 = 0;
+    bool ok2 = 0;
     bool ok = GAM::Initialise(data);
     if (!ok) {
         REPORT_ERROR(ErrorManagement::ParametersError, "Could not Initialise the GAM");
     }
     if (ok) {
-        ok = data.Read("Gain", gain);
+        ok1 = data.Read("Gain", gain);
+        REPORT_ERROR(ErrorManagement::ParametersError, "gain read: %d", ok1);
+        ok2 = data.Read("Offset", offset);
+        REPORT_ERROR(ErrorManagement::ParametersError, "offset read: %d", ok2);
+        ok = ok1 and ok2;
         if (!ok) {
-            REPORT_ERROR(ErrorManagement::ParametersError, "The parameter Gain shall be set");
+            REPORT_ERROR(ErrorManagement::ParametersError, "The parameter Gain and Offset shall be set");
         }
     }
     if (ok) {
         REPORT_ERROR(ErrorManagement::Information, "Parameter Gain set to %d", gain);
+        REPORT_ERROR(ErrorManagement::Information, "Parameter Offset set to %d", offset);
     }
     return ok;
 }
@@ -161,19 +169,23 @@ bool FixedGAMExample1::Setup() {
 }
 
 bool FixedGAMExample1::Execute() {
-    *outputSignal = *inputSignal;
+    *outputSignal = offset + gain * (*inputSignal);
     return true;
 }
 
 
 bool FixedGAMExample1::ExportData(MARTe::StructuredDataI & data) {
     using namespace MARTe;
+    bool ok1 = 0;
+    bool ok2 = 0;
     bool ok = GAM::ExportData(data);
     if (ok) {
         ok = data.CreateRelative("Parameters");
     }
     if (ok) {
-        ok = data.Write("Gain", gain);
+        ok1 = data.Write("Gain", gain);
+        ok2 = data.Write("Offset", offset);
+        ok = ok1 and ok2;
     }
     if (ok) {
         ok = data.MoveToAncestor(1u);

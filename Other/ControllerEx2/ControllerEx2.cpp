@@ -154,6 +154,16 @@ void ControllerEx2::PrintGains(Gain &gainToPrint) {
     REPORT_ERROR(ErrorManagement::Information, "Gain3 %f", gainToPrint.gain3);
 }
 
+MARTe::ErrorManagement::ErrorType ControllerEx2::UpdateGain1(float param1, float param2, float param3, float param4){
+    using namespace MARTe;
+    gains1.lowGains.gain1 = param1;
+    gains1.highGains.gain1 = param2;
+    gains2.lowGains.gain1 = param3;
+    gains2.highGains.gain1 = param4;
+    PrintGainsInfo();
+    return ErrorManagement::NoError;
+}
+
 MARTe::ErrorManagement::ErrorType ControllerEx2::ResetGain1() {
     using namespace MARTe;
     REPORT_ERROR(ErrorManagement::Information, "Resetting gain1");
@@ -164,6 +174,8 @@ MARTe::ErrorManagement::ErrorType ControllerEx2::ResetGain1() {
     PrintGainsInfo();
     return ErrorManagement::NoError;
 }
+
+ 
 
 CLASS_REGISTER(ControllerEx2, "")
 CLASS_METHOD_REGISTER(ControllerEx2, ResetGain1)
