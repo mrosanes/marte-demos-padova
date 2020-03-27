@@ -1,0 +1,35 @@
+
+
+        +GAMUDP = {
+            Class = SimpleUDPSender            
+            InputSignals = {
+                Time = {
+                    DataSource = DDB1
+                    Type = uint32
+                }
+            } 
+            OutputSignals = {
+                Reference1 = {
+                    DataSource = UDPWriter
+                    Type = float32
+                }
+            }
+        }
+
+
+
+
+        +UDPWriter = {
+            Class = SimpleUDPSender
+            Port = 24680
+            Address = "127.0.0.1" 
+            Signals = {
+                Reference1 = {
+                    Type = float32
+                }
+            }
+        }
+
+
+
+..... GAMUDP}
