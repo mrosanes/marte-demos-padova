@@ -135,9 +135,17 @@ public:
      */
     void Do() {
     	using namespace MARTe;
+        int count;
+        int size = Size();
+        for (count = 0u; count < size; count++){
+            ReferenceT<ControllerEx1> myctrl = Get(count);
+            if(myctrl.IsValid()){
+                myctrl->AFunction();
+            }
+        }
     }
-
 };
+
 CLASS_REGISTER(ControllerContainerEx1, "")
 
 }
