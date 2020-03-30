@@ -34,7 +34,7 @@
 #include "ErrorLoggerExample.h"
 #include "EmbeddedServiceMethodBinderT.h"
 #include "FastPollingMutexSem.h"
-#include "MutexSem.h"
+//#include "MutexSem.h"
 #include "ObjectRegistryDatabase.h"
 #include "StandardParser.h"
 #include "SingleThreadService.h"
@@ -46,12 +46,16 @@
 namespace MARTe2Tutorial {
 
 static MARTe::uint32 sharedResource = 0;
+static MARTe::FastPollingMutexSem mutex;
+//static MARTe::MutexSem mutex;
+
 /**
  * @brief a class that contains a single thread service with an embedded binder.
  */
 class SingleThreadServiceExample1: public MARTe::Object, public MARTe::EmbeddedServiceMethodBinderT<SingleThreadServiceExample1> {
 
 public:
+
     CLASS_REGISTER_DECLARATION()SingleThreadServiceExample1() :
     MARTe::Object(), MARTe::EmbeddedServiceMethodBinderT<SingleThreadServiceExample1>(*this, &SingleThreadServiceExample1::ThreadCallback), service(
             *this) {
@@ -83,10 +87,16 @@ public:
             REPORT_ERROR(ErrorManagement::Information, "Callback called with ExecutionInfo::StartupStage");
         }
         else if (info.GetStage() == ExecutionInfo::MainStage) {
+            //mutex.Create(false);
+            //MARTe::MutexSem mutex;
+            mutex.Create(true);
+            mutex.FastLock(1, 1);
             counter++;
             sharedResource++;
             Sleep::Sec(0.2);
             sharedResource--;
+            mutex.FastUnLock();
+            //}
         }
         return err;
     }
@@ -143,10 +153,13 @@ int main(int argc, char **argv) {
         uint32 maxCounter = 50;
         while (singleThreadService->counter < maxCounter) {
             REPORT_ERROR_STATIC(ErrorManagement::Information, "Waiting for counter to reach %d. Currently @ %d. Shared resource %d", maxCounter, singleThreadService->counter, sharedResource);
-            sharedResource++;
-            Sleep::Sec(0.2);
-            sharedResource--;
-            Sleep::Sec(1);
+
+            //mutex.Create(true);
+            if(!mutex.Locked()){
+                sharedResource++;
+                Sleep::Sec(0.2);
+                sharedResource--;
+                Sleep::Sec(1);}
         }
         singleThreadService->service.Stop();
         Sleep::Sec(0.2);
