@@ -30,8 +30,9 @@ class FixedGAMExample1 extends MARTeObject {
      */
     displayData(jsonData) {
         //console.log(jsonData);
-        this.targetDivText.innerHTML = JSON.stringify(jsonData["OutputSignals"], null, '\t');
-        //this.targetDivText.innerHTML = JSON.stringify([jsonData["OutputSignals"], jsonData["OutputSignals"]], null, '\t'); 
+        //this.targetDivText.innerHTML = JSON.stringify(jsonData)
+        //this.targetDivText.innerHTML = JSON.stringify(jsonData["OutputSignals"], null, '\t');
+        this.targetDivText.innerHTML = JSON.stringify([jsonData["InputSignals"], jsonData["Parameters"]], null, '\t'); 
     }
 
     /**
