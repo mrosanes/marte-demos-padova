@@ -46,12 +46,17 @@
     <script>
         function loadPanels() {         
             MARTeLoader.instance().load("ObjectBrowse/TestApp/Functions/FixedGAM1", "FixedGAMExample1", "table0x0");        
-            MARTeLoader.instance().load("ObjectBrowse/TestApp/Functions/FixedGAM1", "", "table0x1", 
+            MARTeLoader.instance().load("ObjectBrowse/TestApp/Functions/FixedGAM1", "FixedGAMExample1", "table0x1", 
                                             function(obj) {
                                                 obj.setColor("green");
                                             }
+                                       );
+            MARTeLoader.instance().load("ObjectBrowse/TestApp/Functions/FixedGAM1", "MARTeObject", "table1x0"); 
+            MARTeLoader.instance().load("ObjectBrowse/TestApp/Functions/FixedGAM1", "FixedGAMExample1", "table1x1", 
+                                            function(obj) {
+                                                obj.setColor("blue");
+                                            }
                                         );
-            MARTeLoader.instance().load("ObjectBrowse/TestApp/Functions/FixedGAM1", "MARTeObject", "table1x0");        
         }
     </script>    
     <body onload="loadPanels()">
