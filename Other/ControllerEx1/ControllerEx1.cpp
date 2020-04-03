@@ -84,6 +84,36 @@ bool ControllerEx1::Initialise(MARTe::StructuredDataI &data) {
             ok = data.MoveToAncestor(2u); 
         }
     }
+
+
+
+
+    if (ok) {
+        ok = data.MoveRelative("Gains2.Low");
+        if (!ok) {
+            REPORT_ERROR(ErrorManagement::ParametersError, "Gains2.Low shall be specified");
+        }
+    }
+    if (ok) {
+        ok = LoadGains(gains2.lowGains, data);
+        if (ok) {
+            ok = data.MoveToAncestor(2u); 
+        }
+    }
+    if (ok) {
+        ok = data.MoveRelative("Gains2.High");
+        if (!ok) {
+            REPORT_ERROR(ErrorManagement::ParametersError, "Gains2.High shall be specified");
+        }
+    }
+    if (ok) {
+        ok = LoadGains(gains2.highGains, data);
+        if (ok) {
+            ok = data.MoveToAncestor(2u); 
+        }
+    }
+
+
     if (ok) {
         REPORT_ERROR(ErrorManagement::Information, "Tau %f", tau);
         REPORT_ERROR(ErrorManagement::Information, "Gains 1 low gains");
@@ -104,6 +134,10 @@ bool ControllerEx1::LoadGains(Gain &gainToLoad, MARTe::StructuredDataI &data) {
     bool ok = data.Read("Gain1", gainToLoad.gain1);
     if (!ok) {
         REPORT_ERROR(ErrorManagement::Information, "Gain1 shall be specified");
+    }
+    bool ok2 = data.Read("Gain2", gainToLoad.gain2);
+    if (!ok2) {
+        REPORT_ERROR(ErrorManagement::Information, "Gain2 shall be specified");
     }
     AnyType arrayDescription = data.GetType("Gain3");
     if (ok) {
